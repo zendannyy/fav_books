@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'styles.css' %}">
+    <title>Title</title>
+</head>
+<body>
+<div class="welcome">
+
+  <h2>Welcome, {{ request.session.first_name }}</h2>
+    <a href="/" class="log_out">Log Out</a>
+</div>
+<div class="add">
+    <h2>Add a Favorite Book</h2>
+    {% if messages %}
+    <ul>
+        {% for message in messages %}
+        <li {% if message.tags %}
+            {% endif %}> {{ message }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+
+<!--    this action is for urls -->
+  <form action="/books/create" method="POST">
+        {% csrf_token %}
+        <label>Title </label> <input type="text" name="title">
+        <label>Author </label><input type="text" name="author">
+        <button type="submit">Add</button>
+    </form>
+</div>
+
+<div class="all_books">
+    <h3>All Books</h3>
+    {% for book in all_books %}
+    <a href="books/{{book.id}}"><h3>{{ book.title }}</h3></a>
+    {% endfor %}
+
+</div>
+<div class="your_books">
+    <h3>Your Fav Books</h3>
+    {% for book in all_books %}
+    <a href="/books/{{book.id}}"><h3>{{ book.title}}</h3></a>
+    {% endfor %}
+
+</div>
+</body>
+</html>

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'styles.css' %} {% now 'U' %}">
+    <title>Title</title>
+</head>
+<body>
+<div class="welcome">
+    <h2>Welcome, {{ request.session.first_name }}</h2>
+    <a href="/" class="log_out">Log Out | </a>
+        <a href="/books" class="books">Back to Books</a>
+</div>
+     <div class="book-info">
+<!--         have to use this_book from books_info views function -->
+            <div class="title">{{ this_book.title }}</div>
+            <h5>Added by: {{ this_book.uploaded_by.first_name }} {{ this_book.uploaded_by.email }}</h5>
+            <h5>Added on: {{ this_book.created_at }}</h5>
+            <h5>Last updated on: {{ this_book.updated_at }}</h5>
+            <h5>Author: {{ this_book.author }} </h5>
+         {% if this_book.uploaded_by.id != request.session.user_id %}
+         <p>Description: {{ this_book.description }}</p>
+         {% else %}
+         <form class="edit_form" action="/books/{{this_book.id}}/edit" method="POST">
+            {% csrf_token %}
+            <label>Title </label> <input type="text" name="title">
+            <label>Author </label><input type="text" name="author">
+            <button type="submit" name="updated_at" value="{{ book.updated_at }}">Update</button>
+            <button type="submit" name="updated_at" value="{{ book.updated_at }}">  <a href="/destroy/{{ this_book.id }}" class="button">Delete Book</a> </button>
+
+         </form>
+         {% endif %}
+     </div>
+
+<div class="liked">
+    <h3>Users Who Like This Book</h3>
+    <ul>
+        {% for user in this_book.liked_by.all %}
+        <li> {{ user.first_name }} {{ user.email }}</li>
+        {% endfor %}
+    </ul>
+    <!--    from views, using liked_book-->
+        {% if user in liked_by.all %}
+        <a href="/un_favorite/{{this_book.id}}"> Un-favorite </a>
+        {% else %}
+        <a href="/favorite/{{this_book.id}}">Add to Favorites</a>
+        {% endif %}
+
+</div>
+
+
+</body>
+</html>

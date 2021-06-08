@@ -1,0 +1,37 @@
+*{
+    margin: 0px;
+    padding: 0px;
+    }
+    
+
+body{
+    background-image: url('cover.jpeg');
+    background-size:30em ;
+}
+    form{
+    text-align:center;
+}
+
+.messages> ul> li{
+    list-style:none;
+}
+
+.add{
+    margin-top: 40px;
+    width: fit-content;
+}
+
+.add button{
+    display: block;
+    margin-top: 10px;
+
+}
+
+
+.all_books{
+    margin-top: 40px;
+}
+
+.your_books{
+    margin-top: 40px;
+}
